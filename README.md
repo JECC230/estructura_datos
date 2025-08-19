@@ -10,9 +10,7 @@ Implementación de un sistema operativo simulado que utiliza:
 - Pilas para gestionar historial de comandos
 - Colas para administrar programas en ejecución
 
-## Estructura del proyecto
-- `src/`: Código fuente Java
-- `docs/`: Documentación técnica y casos de prueba
+
 
 ## Funcionalidades
 - Gestión de historial de comandos (Pila)
@@ -20,8 +18,3 @@ Implementación de un sistema operativo simulado que utiliza:
 - Menú interactivo para operaciones
 - Simulación completa del sistema
 
-## Ejecución
-Compilar y ejecutar con:
-```bash
-javac src/Actividad2.java
-java Actividad2
