@@ -2,7 +2,7 @@
 
 1. Estructuras de Datos Implementadas
 
-##ListaLigada
+## ListaLigada
 
 Propósito: Implementación básica de una lista ligada que servirá como base para las estructuras de Pila y Cola.
 Características:
