@@ -1,177 +1,155 @@
 import java.util.Scanner;
 
+// Clase Nodo para la lista ligada
+// Representa un elemento en la lista ligada.
+class Nodo {
+    int data;
+    Nodo next;
 
-// Implementa una estructura de datos LIFO (Last-In, First-Out) usando un arreglo.
+    public Nodo(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+
+// Implementa una estructura de datos LIFO (Last-In, First-Out) utilizando una lista ligada.
 class Pila {
-    private int[] data;
-    private int top;
-    private int capacity;
+    private Nodo top;
 
-    public Pila(int capacity) {
-        this.capacity = capacity;
-        data = new int[capacity];
-        top = -1; // Pila vacia
+    public Pila() {
+        this.top = null;
     }
 
     public boolean isEmpty() {
-        return top == -1;
+        return top == null;
     }
 
-    public boolean isFull() {
-        return top == capacity - 1;
-    }
-
-    // Agrega un elemento a la cima de la pila.
+    // Agrega un elemento a la cima de la pila (principio de la lista ligada).
     public void push(int x) {
-        if (isFull()) {
-            System.out.println("Pila llena. No se puede agregar " + x);
-            return;
-        }
-        data[++top] = x;
+        Nodo newNode = new Nodo(x);
+        newNode.next = top;
+        top = newNode;
+        System.out.println("Elemento " + x + " agregado a la pila.");
     }
 
     // Elimina y devuelve el elemento de la cima de la pila.
     public int pop() {
         if (isEmpty()) {
-            System.out.println("Pila vacia. No se puede eliminar un elemento");
-            return -1; // Indicador de error
+            System.out.println("Pila vacía. No se puede eliminar un elemento.");
+            return -1;
         }
-        return data[top--];
+        int removedData = top.data;
+        top = top.next;
+        return removedData;
     }
 
     // Devuelve el elemento de la cima de la pila sin eliminarlo.
     public int peek() {
         if (isEmpty()) {
-            System.out.println("Pila vacia. No hay elemento superior");
+            System.out.println("Pila vacía. No hay elemento superior.");
             return -1;
         }
-        return data[top];
+        return top.data;
     }
 
-    // Muestra todos los elementos de la pila desde el tope.
+    // Muestra todos los elementos de la pila.
     public void mostrar() {
         if (isEmpty()) {
-            System.out.println("La pila está vacía");
+            System.out.println("La pila está vacía.");
             return;
         }
-        
         System.out.println("Contenido de la pila (desde el tope): ");
-        for (int i = top; i >= 0; i--) {
-            System.out.print(data[i] + " ");
+        Nodo current = top;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
         }
         System.out.println();
-    }
-    
-    public int getSize() {
-        return top + 1;
-    }
-    
-    public int getCapacity() {
-        return capacity;
     }
 }
 
 
-// Implementa una estructura de datos FIFO (First-In, First-Out) usando un arreglo circular.
+// Implementa una estructura de datos FIFO (First-In, First-Out) utilizando una lista ligada.
 class Cola {
-    private int[] data;
-    private int front;
-    private int rear;
-    private int size;
-    private int capacity;
+    private Nodo front;
+    private Nodo rear;
 
-    public Cola(int capacity) {
-        this.capacity = capacity;
-        data = new int[capacity];
-        front = 0;
-        rear = -1;
-        size = 0;
+    public Cola() {
+        this.front = null;
+        this.rear = null;
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return front == null;
     }
 
-    public boolean isFull() {
-        return size == capacity;
-    }
-
-    // Agrega un elemento al final de la cola (rear).
+    // Agrega un elemento al final de la cola.
     public void enqueue(int x) {
-        if (isFull()) {
-            System.out.println("Cola llena. No se puede agregar " + x);
-            return;
+        Nodo newNode = new Nodo(x);
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
         }
-        rear = (rear + 1) % capacity;
-        data[rear] = x;
-        size++;
+        System.out.println("Elemento " + x + " agregado a la cola.");
     }
 
-    // Elimina y devuelve el elemento del frente de la cola (front).
+    // Elimina y devuelve el elemento del frente de la cola.
     public int dequeue() {
         if (isEmpty()) {
-            System.out.println("Cola vacia. No se puede eliminar un elemento");
+            System.out.println("Cola vacía. No se puede eliminar un elemento.");
             return -1;
         }
-        int removedElement = data[front];
-        front = (front + 1) % capacity;
-        size--;
-        return removedElement;
+        int removedData = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null; // La cola queda vacía.
+        }
+        return removedData;
     }
 
     // Devuelve el elemento del frente de la cola sin eliminarlo.
     public int peek() {
         if (isEmpty()) {
-            System.out.println("Cola vacia. No hay elemento superior");
+            System.out.println("Cola vacía. No hay elemento al frente.");
             return -1;
         }
-        return data[front];
+        return front.data;
     }
 
-    // Muestra todos los elementos de la cola desde el frente.
+    // Muestra todos los elementos de la cola.
     public void mostrar() {
         if (isEmpty()) {
-            System.out.println("La cola está vacía");
+            System.out.println("La cola está vacía.");
             return;
         }
         System.out.println("Contenido de la cola (desde el frente): ");
-        for (int i = 0; i < size; i++) {
-            System.out.print(data[(front + i) % capacity] + " ");
+        Nodo current = front;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
         }
         System.out.println();
-    }
-    
-    public int getSize() {
-        return size;
-    }
-    
-    public int getCapacity() {
-        return capacity;
     }
 }
 
 // Menú de opciones
 public class Act2 {
     private static Scanner scanner = new Scanner(System.in);
-    private static Pila pila;
-    private static Cola cola;
-    
+    private static Pila pila = new Pila();
+    private static Cola cola = new Cola();
+
     public static void main(String[] args) {
-        inicializarEstructuras();
+        System.out.println("Estructuras de datos (Pila y Cola) creadas.");
         mostrarMenu();
     }
-    
-    private static void inicializarEstructuras() {
-        System.out.print("Ingrese la capacidad de las estructuras: ");
-        int capacidad = scanner.nextInt();
-        pila = new Pila(capacidad);
-        cola = new Cola(capacidad);
-        System.out.println("Pila y Cola creadas con capacidad: " + capacidad);
-    }
-    
+
     private static void mostrarMenu() {
         int opcion;
-        
+
         do {
             System.out.println("\n=== MENÚ DE ESTRUCTURAS DE DATOS ===");
             System.out.println("--- Pila ---");
@@ -188,79 +166,84 @@ public class Act2 {
             System.out.println("10. Verificar si la Cola está vacía");
             System.out.println("11. Salir");
             System.out.print("Seleccione una opción: ");
-            
-            opcion = scanner.nextInt();
-            
-            switch (opcion) {
-                case 1:
-                    agregarElementoPila();
-                    break;
-                case 2:
-                    eliminarElementoPila();
-                    break;
-                case 3:
-                    verElementoSuperiorPila();
-                    break;
-                case 4:
-                    mostrarPila();
-                    break;
-                case 5:
-                    verificarVaciaPila();
-                    break;
-                case 6:
-                    agregarElementoCola();
-                    break;
-                case 7:
-                    eliminarElementoCola();
-                    break;
-                case 8:
-                    verElementoFrenteCola();
-                    break;
-                case 9:
-                    mostrarCola();
-                    break;
-                case 10:
-                    verificarVaciaCola();
-                    break;
-                case 11:
-                    System.out.println("Saliendo del programa...");
-                    break;
-                default:
-                    System.out.println("Opción no válida. Intente nuevamente.");
+
+            try {
+                opcion = scanner.nextInt();
+                switch (opcion) {
+                    case 1:
+                        agregarElementoPila();
+                        break;
+                    case 2:
+                        eliminarElementoPila();
+                        break;
+                    case 3:
+                        verElementoSuperiorPila();
+                        break;
+                    case 4:
+                        mostrarPila();
+                        break;
+                    case 5:
+                        verificarVaciaPila();
+                        break;
+                    case 6:
+                        agregarElementoCola();
+                        break;
+                    case 7:
+                        eliminarElementoCola();
+                        break;
+                    case 8:
+                        verElementoFrenteCola();
+                        break;
+                    case 9:
+                        mostrarCola();
+                        break;
+                    case 10:
+                        verificarVaciaCola();
+                        break;
+                    case 11:
+                        System.out.println("Saliendo del programa...");
+                        break;
+                    default:
+                        System.out.println("Opción no válida. Intente nuevamente.");
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese un número.");
+                scanner.next(); // Limpiar el buffer de entrada
+                opcion = 0;
             }
-            
+
         } while (opcion != 11);
     }
-    
+
     private static void agregarElementoPila() {
         System.out.print("Ingrese el número a agregar a la pila: ");
         int elemento = scanner.nextInt();
         pila.push(elemento);
     }
-    
+
     private static void eliminarElementoPila() {
         int elementoEliminado = pila.pop();
         if (elementoEliminado != -1) {
             System.out.println("Elemento eliminado de la pila: " + elementoEliminado);
         }
     }
-    
+
     private static void verElementoSuperiorPila() {
         int elementoSuperior = pila.peek();
         if (elementoSuperior != -1) {
             System.out.println("Elemento superior de la pila: " + elementoSuperior);
         }
     }
-    
+
     private static void mostrarPila() {
         pila.mostrar();
     }
-    
+
     private static void verificarVaciaPila() {
         if (pila.isEmpty()) {
-            System.out.println("La pila está vacía");
+            System.out.println("La pila está vacía.");
         } else {
-            System.out.println("La pila NO está vacía");
+            System.out.println("La pila NO está vacía.");
         }
     }
 
@@ -290,9 +273,9 @@ public class Act2 {
 
     private static void verificarVaciaCola() {
         if (cola.isEmpty()) {
-            System.out.println("La cola está vacía");
+            System.out.println("La cola está vacía.");
         } else {
-            System.out.println("La cola NO está vacía");
+            System.out.println("La cola NO está vacía.");
         }
     }
 }
